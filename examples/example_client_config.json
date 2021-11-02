@@ -1,0 +1,7 @@
+{
+    "security" : {
+       "client_cert": "client-cert.pem",
+       "client_key": "client-key.pem",
+       "root_cert": "ca-cert.pem"
+    }
+ }

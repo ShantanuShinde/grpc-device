@@ -31,6 +31,7 @@ import session_pb2_grpc as grpc_session
 import matplotlib.pyplot as plt
 import numpy as np
 import keyword
+import client_security_configuration as csc 
 
 server_address = "localhost"
 server_port = "31763"
@@ -57,7 +58,10 @@ if len(sys.argv) >= 4:
     options = ""
 
 # Create the communication channel for the remote host and create connections to the NI-DMM and session services.
-channel = grpc.insecure_channel(f"{server_address}:{server_port}")
+client_cert_parser = csc.ClientSecurityConfigurationParser()
+ssl_cred = grpc.ssl_channel_credentials(client_cert_parser.get_root_cert(), client_cert_parser.get_client_key(), client_cert_parser.get_client_cert())
+
+channel = grpc.secure_channel(f"{server_address}:{server_port}", ssl_cred)
 nidmm_client = grpc_nidmm.NiDmmStub(channel)
 
 any_error = False

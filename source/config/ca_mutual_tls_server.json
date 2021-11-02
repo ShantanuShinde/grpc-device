@@ -1,0 +1,8 @@
+{
+    "port": 31763,
+    "security" : {
+       "server_cert": "server-cert.pem",
+       "server_key": "server-key.pem",
+       "root_cert": "ca-cert.pem"
+    }
+ }

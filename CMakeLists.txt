@@ -219,8 +219,17 @@ endif()
 add_custom_command(
    TARGET ni_grpc_device_server POST_BUILD
    COMMAND  ${CMAKE_COMMAND} -E copy_if_different
-            ${CMAKE_SOURCE_DIR}/source/config/insecure_config.json
+            ${CMAKE_SOURCE_DIR}/source/config/ca_mutual_tls_server.json
             $<TARGET_FILE_DIR:ni_grpc_device_server>/server_config.json)
+
+#----------------------------------------------------------------------
+# Copy server asset certificates to binary output certs sub-directory
+#----------------------------------------------------------------------
+add_custom_command(
+  TARGET ni_grpc_device_server POST_BUILD
+  COMMAND  ${CMAKE_COMMAND} -E copy_directory
+           ${CMAKE_SOURCE_DIR}/source/server/assets/
+           $<TARGET_FILE_DIR:ni_grpc_device_server>/)
 
 #----------------------------------------------------------------------
 # Add JSON parser and configure google tests
@@ -302,6 +311,8 @@ target_link_libraries(UnitTestsRunner
     ${CMAKE_DL_LIBS}
     Threads::Threads
     nlohmann_json::nlohmann_json)
+
+
 
 #----------------------------------------------------------------------
 # Copy test asset certificates to binary output certs sub-directory
